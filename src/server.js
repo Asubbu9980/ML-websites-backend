@@ -1,6 +1,21 @@
+import fs from 'fs';
+
+// Ensure .env environment variables are loaded at startup using native Node.js env loader
+if (fs.existsSync('.env')) {
+  try {
+    process.loadEnvFile('.env');
+  } catch (err) {
+    console.warn('⚠️  Could not parse .env file:', err.message);
+  }
+}
+
 import { createApp } from './app.js';
 import { loadSites } from './config/sites.js';
 import { createTransporters } from './mailer.js';
+import { connectDB } from './config/db.js';
+
+// Connect to MongoDB if MONGODB_URI is provided
+connectDB();
 
 const sites = loadSites();
 const transporters = createTransporters(sites);
