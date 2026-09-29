@@ -3,6 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import { rateLimit, ipKeyGenerator } from 'express-rate-limit';
 import { HONEYPOT_FIELD, validateSubmission } from './validate.js';
+import { jobRouter } from './routes/jobRoutes.js';
  
 /**
  * Builds the Express app. `sites` comes from loadSites(); `transporters` maps
@@ -121,6 +122,7 @@ export function createApp({ sites, transporters, env = process.env, logger = con
   });
  
   app.use('/api/contact', router);
+  app.use('/api/jobs', jobRouter);
  
   app.use((req, res) => res.status(404).json({ ok: false, error: 'Not found' }));
  
